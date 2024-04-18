@@ -8,7 +8,7 @@ FILE *file;
 
 int main() {
 
-    file = fopen("app/test","r");
+    file = fopen("app/test.txt","r");
 
     if (!file) {
         perror("fopen");

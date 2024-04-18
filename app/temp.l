@@ -13,14 +13,26 @@
 [0-9]+          { yylval = yytext;
                   return NUM;
                 }
-[a-z]           { yylval = yytext;
-                  return VAR;
+var             { yylval = yytext;
+                  return VAR_token;
                 }
-[$][A-Z]+       { yylval = yytext;
-                  return NAME;
+[A-Za-z][A-Za-z0-9]*        { yylval = yytext;
+                              return NAME;
+                            }
+[-+]            { yylval = yytext;
+                  return SIGN_LOWER;  
+                }
+[*]             { yylval = yytext;
+                  return SIGN_UP;
+                }
+[,]                {  yylval = yytext;
+                  return SEP;
+                }
+[;]             {  yylval = yytext;
+                  return END_OP;
                 }
 [ \t\r\n]       ; // whitespace
-[-+*^()] { return *yytext; }
+[^()] { return *yytext; }
 .               yyerror("Invalid character");
 
 %%
