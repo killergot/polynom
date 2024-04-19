@@ -45,7 +45,7 @@ TERM: UNTERM                      {$$ = $1;}
 |     TERM SIGN_UP UNTERM         {$$ = $1 + $2 + $3;};
 
 UNTERM: VAL                       {$$ = $1;}
-|       '-'VAL                    {$$ = $1 + $2;};
+|       SIGN_LOWER VAL                    {$$ = $1 + $2;};
 
 VAL:    NUM                       {$$ = $1;}
 |       '('EXPR')'                {$$ = $1 + $2 + $3;}
