@@ -1,7 +1,2 @@
 var x = 2, A = x + 1 , B = c ^ 2;
 var A1=xyz;
-A^2+A1+x^2-1;
-A;     
-A;
-Vssd;
-afdsdf;

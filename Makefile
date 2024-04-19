@@ -12,6 +12,7 @@ app/lex.yy.c : app/temp.l
 
 $(TARGET_TWO) : test_cpp/map.cpp
 	c++ test_cpp/map.cpp -o $(TARGET_TWO)
+	./test
 
 
 clean :

@@ -1,5 +1,8 @@
 %{
     #include <iostream>
+    #include <map>
+    using namespace std;
+
     extern int yylineno;
     extern int yylex();
     extern char* yytext;
@@ -7,45 +10,49 @@
       std::cout << s << ", line " << yylineno << " in " << yytext << std::endl;
     }
     #define YYSTYPE std::string
+
+    map<string, string> variable;
+
 %}
 
 %token NUM NAME SIGN_LOWER SIGN_UP SEP END_OP VAR_token
 
 %%
-PROGRAM: OPS                      {printf("%d ",1);};
+PROGRAM: OPS   {for (const auto& [product, price] : variable)
+                std::cout << product << "\t" << price << std::endl;};
 
-OPS: OP                           {printf("%d ",2);}
-|     OPS OP                      {printf("%d ",3);};
+OPS: OP                        
+|     OPS OP                      ;
 
 OP: INIT
-| EXPRS;
+| EXPRS   { cout << $1 << endl;};
 
-INIT: VAR_INIT                    {printf("%d ",5);};
+INIT: VAR_INIT                    ;
 
-VAR_INIT: VAR_token VARS END_OP   {printf("%d ",7);};
+VAR_INIT: VAR_token VARS END_OP   ;
 
-VARS: VAR                         {printf("%d ",8);}
-|     VARS SEP VAR                {printf("%d ",9);};
+VARS: VAR                      
+|     VARS SEP VAR;
 
-VAR: NAME '=' EXPR                {printf("%d ",10);}
+VAR: NAME '=' EXPR                {variable[$1] = $3;};
 
-EXPRS: EXPR  END_OP               {printf("%d ",11);};
+EXPRS: EXPR  END_OP               {$$ = $1 + $2;};
 
-EXPR: TERM                        {printf("%d ",12);}
-|     EXPR SIGN_LOWER TERM        {printf("%d ",13);};
+EXPR: TERM                        {$$ = $1;}
+|     EXPR SIGN_LOWER TERM        {$$ = $1 + $2 + $3;};
 
-TERM: UNTERM                      {printf("%d ",14);}
-|     TERM SIGN_UP UNTERM         {printf("%d ",15);};
+TERM: UNTERM                      {$$ = $1;}
+|     TERM SIGN_UP UNTERM         {$$ = $1 + $2 + $3;};
 
-UNTERM: VAL                       {printf("%d ",16);}
-|       '-'VAL                    {printf("%d ",17);};
+UNTERM: VAL                       {$$ = $1;}
+|       '-'VAL                    {$$ = $1 + $2;};
 
-VAL:    NUM                       {printf("%d ",18);}
-|       '('EXPR')'                {printf("%d ",19);}
-|       NAME_POW                  {printf("%d ",20);};
+VAL:    NUM                       {$$ = $1;}
+|       '('EXPR')'                {$$ = $1 + $2 + $3;}
+|       NAME_POW                  {$$ = $1;};
 
-NAME_POW: NAME POW                {printf("%d ",21);};
+NAME_POW: NAME POW                {$$ = $1 + $2;};
 
-POW: '^' NUM                      {printf("%d ",22);}
-|                                 {printf("%d ",23);};
+POW: '^' NUM                      {$$ = '^' + $2;}
+|                                 {$$ = "";};
 %%
