@@ -2,16 +2,16 @@ TARGET_ONE = k
 TARGET_TWO = test
 
 $(TARGET_ONE) : clean app/main.cpp app/y.tab.c app/lex.yy.c
-	c++ app/main.cpp app/y.tab.c -o $(TARGET_ONE)
+	c++ app/main.cpp app/y.tab.c -o $@
 
 app/y.tab.c : app/lex.yy.c
-	bison -d -v app/temp.y -o app/y.tab.c
+	bison -d -v app/temp.y -o $@
 
 app/lex.yy.c : app/temp.l
-	lex -o app/lex.yy.c app/temp.l
+	lex -o $@ $<
 
 $(TARGET_TWO) : test_cpp/test.cpp
-	c++ test_cpp/test.cpp -o $(TARGET_TWO)
+	c++ $< -o $@
 	./test
 
 

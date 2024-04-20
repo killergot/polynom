@@ -19,25 +19,50 @@ struct KeySizeComparator {
 set<string> token(string expression,map<string,string,KeySizeComparator<string>> variable);
 
 int check_var(map<string, string, KeySizeComparator<string>> variable);
-int parse_expr(string expr, map<string, string, KeySizeComparator<string>> variable);
+void parse_expr(string& expr, map<string, string, KeySizeComparator<string>> variable);
+void replaceAll(std::string& str, const std::string& from, const std::string& to);
+
 
 int main()
 {
     
     map<string, string, KeySizeComparator<string>> variable;
     variable["A"] = "C+1";
-    variable["B"] = "A-y";
-    variable["C"] = "D-1";
-    variable["D"] = "B-1";
+    variable["C"] = "x-(y*2)";
     for (const auto& [a, b] : variable)
         cout << a << "\t" << b << endl;
     string check = "A+B+x+1-5-A+a";
+    cout << "Before : " + check + '\n';
 
     check_var(variable);
     
-    
+    parse_expr(check,variable);
+    cout <<"After: " + check;
 
     return 0;
+}
+
+void replaceAll(std::string& str, const std::string& from, const std::string& to) {
+    size_t start_pos = 0;
+    while ((start_pos = str.find(from, start_pos)) != std::string::npos) {
+        str.replace(start_pos, from.length(), to);
+        start_pos += to.length(); // Перемещаем позицию, чтобы избежать зацикливания
+    }
+}
+
+void parse_expr(string& expr, map<string, string, KeySizeComparator<string>> variable){
+    bool check = true;
+
+    while (check){
+        set<string> temp = token(expr,variable);
+        if (!temp.empty()){
+            for (string i : temp){
+                replaceAll(expr,i,'(' + variable[i] + ')');
+            }
+        }
+        else
+            check = false;
+    }
 }
 
 
