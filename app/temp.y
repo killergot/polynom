@@ -19,7 +19,7 @@
 
 %%
 PROGRAM: OPS   {for (const auto& [product, price] : variable)
-                std::cout << product << "\t" << price << std::endl;};
+                cout << product << "\t" << price << endl;};
 
 OPS: OP                        
 |     OPS OP                      ;

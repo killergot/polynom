@@ -10,8 +10,8 @@ app/y.tab.c : app/lex.yy.c
 app/lex.yy.c : app/temp.l
 	lex -o app/lex.yy.c app/temp.l
 
-$(TARGET_TWO) : test_cpp/map.cpp
-	c++ test_cpp/map.cpp -o $(TARGET_TWO)
+$(TARGET_TWO) : test_cpp/test.cpp
+	c++ test_cpp/test.cpp -o $(TARGET_TWO)
 	./test
 
 
