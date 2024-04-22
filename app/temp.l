@@ -30,9 +30,9 @@ var             { yylval = yytext;
                 }
 [;]             {  yylval = yytext;
                   return END_OP;
-                }
+                }         
+[\^)(=]            { return *yytext; }
 [ \t\r\n]       ; // whitespace
-[^()] { return *yytext; }
 .               yyerror("Invalid character");
 
 %%

@@ -1,14 +1,18 @@
 #include <iostream>
+#include <string>
 #include "lex.yy.c"
 
 extern int yyparse(); // Прототип функции yyparse() из сгенерированного файла
 
 
-FILE *file;
-
-int main() {
-
-    file = fopen("app/test.txt","r");
+int main(int argc, char *argv[]) {
+    FILE *file;
+    if(argc!=2) {
+        file = fopen("app/test.txt","r");
+    }
+    else{
+        file = fopen(argv[1],"r");
+    }
 
     if (!file) {
         perror("fopen");

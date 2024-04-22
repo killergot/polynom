@@ -15,7 +15,7 @@
 
 %}
 
-%token NUM NAME SIGN_LOWER SIGN_UP SEP END_OP VAR_token
+%token NUM NAME SIGN_LOWER SIGN_UP SEP END_OP VAR_token 
 
 %%
 PROGRAM: OPS   {for (const auto& [product, price] : variable)
@@ -44,14 +44,17 @@ EXPR: TERM                        {$$ = $1;}
 TERM: UNTERM                      {$$ = $1;}
 |     TERM SIGN_UP UNTERM         {$$ = $1 + $2 + $3;};
 
-UNTERM: VAL                       {$$ = $1;}
-|       SIGN_LOWER VAL                    {$$ = $1 + $2;};
+UNTERM: VAL POW                    {$$ = $1 + $2;}
+|       SIGN_LOWER VAL  POW            {$$ = $1 + $2 + $3;};
 
 VAL:    NUM                       {$$ = $1;}
-|       '('EXPR')'                {$$ = $1 + $2 + $3;}
-|       NAME_POW                  {$$ = $1;};
+|       '('EXPR')'                {$$ = '(' + $2 + ')';}
+|       COEF_NAME_POW                  {$$ = $1;};
 
-NAME_POW: NAME POW                {$$ = $1 + $2;};
+COEF_NAME_POW: COEF NAME              {$$ = $1 + $2;};
+
+COEF: NUM                         {$$ = $1 + '*';}
+|                                 {$$ = "";};
 
 POW: '^' NUM                      {$$ = '^' + $2;}
 |                                 {$$ = "";};

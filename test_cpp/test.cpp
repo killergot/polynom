@@ -4,8 +4,17 @@
 #include <vector>
 #include <string>
 #include <set>
+#include "eval.h"
+
 
 using namespace std;
+
+struct term { //   2x^3     -2y     5
+    int coef; //   2        -2      5    
+    string name;// x        y       a
+    int pow;//     3        1       0
+} typedef term;
+
 
 template<typename T>
 struct KeySizeComparator {
@@ -22,24 +31,68 @@ int check_var(map<string, string, KeySizeComparator<string>> variable);
 void parse_expr(string& expr, map<string, string, KeySizeComparator<string>> variable);
 void replaceAll(std::string& str, const std::string& from, const std::string& to);
 
+string solution(string);
+
+string validator(string);
+string to_canon(string);
+string find_multiply(string);
+string multiply();
 
 int main()
 {
-    
     map<string, string, KeySizeComparator<string>> variable;
     variable["A"] = "C+1";
-    variable["C"] = "x-(y*2)";
+    variable["C"] = "x*5";
     for (const auto& [a, b] : variable)
         cout << a << "\t" << b << endl;
-    string check = "A+B+x+1-5-A+a";
+    string check = "A*A";
     cout << "Before : " + check + '\n';
 
     check_var(variable);
     
     parse_expr(check,variable);
-    cout <<"After: " + check;
+    cout <<"After: " + check << endl;
+
+    cout << solution(check);
 
     return 0;
+}
+
+string validator(string expr){
+    std::regex pattern("[A-Za-z][A-Za-z1-9]*"); 
+    // Создаем итераторы для поиска всех совпадений
+    std::sregex_iterator next(expr.begin(), expr.end(), pattern);
+    std::sregex_iterator end;
+
+    set<string> temp;
+
+    while (next != end) {
+        std::smatch match = *next;
+        temp.insert(match.str());
+        next++;
+    }
+    if (temp.empty())
+        return "empty";
+    if (temp.size() > 1)
+        return "";
+    else
+        for (string i : temp)   // Не знаю как забрать просто этот 1 ебучий элемент
+            return i;
+} 
+
+string to_canon(string expr){
+
+}
+
+string solution(string expr){
+    string var = validator(expr);
+    if (var.empty())
+        return "Больше одного операнда";
+    else if (var == "empty")
+        return (to_string(eval(expr)));
+    else{
+        return "okey";
+    }
 }
 
 void replaceAll(std::string& str, const std::string& from, const std::string& to) {

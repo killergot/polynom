@@ -11,7 +11,7 @@ app/lex.yy.c : app/temp.l
 	lex -o $@ $<
 
 $(TARGET_TWO) : test_cpp/test.cpp
-	c++ $< -o $@
+	c++ $< test_cpp/eval.cpp -o $@
 	./test
 
 
@@ -21,3 +21,4 @@ clean :
 	rm -f app/lex.yy.c
 	rm -f app/y.tab.*
 	rm -f app/y.output
+	rm -f $(TARGET_ONE)$(TARGET_ONE)
