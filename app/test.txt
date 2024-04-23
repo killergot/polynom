@@ -1,3 +1,2 @@
-var x = 2++2, A = (-x-1)^2*3b + 1;
-var  b = -1,c = +B, aasdf = 1, asfasdfgsda = 2;
-2a*(x+1)*(x-1)*a^22;
+var A = 2x+1,B = 4x-2;
+A*B*A;

@@ -1,6 +1,7 @@
 %{
     #include <iostream>
     #include <map>
+    #include "../eval/evalPoly.h"
     using namespace std;
 
     extern int yylineno;
@@ -11,7 +12,7 @@
     }
     #define YYSTYPE std::string
 
-    map<string, string> variable;
+    map<string, string,KeySizeComparator<string>> variable;
 
 %}
 
@@ -25,7 +26,7 @@ OPS: OP
 |     OPS OP                      ;
 
 OP: INIT
-| EXPRS   { cout << $1 << endl;};
+| EXPRS                           ;
 
 INIT: VAR_INIT                    ;
 
@@ -36,7 +37,7 @@ VARS: VAR
 
 VAR: NAME '=' EXPR                {variable[$1] = $3;};
 
-EXPRS: EXPR  END_OP               {$$ = $1 + $2;};
+EXPRS: EXPR  END_OP               { cout << $1 << " = " << solution($1,variable) << endl;};
 
 EXPR: TERM                        {$$ = $1;}
 |     EXPR SIGN_LOWER TERM        {$$ = $1 + $2 + $3;};

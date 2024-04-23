@@ -2,7 +2,7 @@ TARGET_ONE = k
 TARGET_TWO = test
 
 $(TARGET_ONE) : clean app/main.cpp app/y.tab.c app/lex.yy.c
-	c++ app/main.cpp app/y.tab.c -o $@
+	c++ eval/evalPoly.cpp eval/eval.cpp app/main.cpp app/y.tab.c -o $@
 
 app/y.tab.c : app/lex.yy.c
 	bison -d -v app/temp.y -o $@
@@ -10,8 +10,8 @@ app/y.tab.c : app/lex.yy.c
 app/lex.yy.c : app/temp.l
 	lex -o $@ $<
 
-$(TARGET_TWO) : test_cpp/test.cpp
-	c++ $< test_cpp/eval.cpp -o $@
+$(TARGET_TWO) : eval/evalPoly.cpp
+	c++ $< eval/eval.cpp -o $@
 	./test
 
 
